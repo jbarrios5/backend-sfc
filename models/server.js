@@ -11,6 +11,7 @@ class Server {
 
         this.paths = {
             client:'/api/v1/client',
+            punto:'/api/v1/punto',
             regla:'/api/v1/regla',
         }
 
