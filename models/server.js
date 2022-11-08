@@ -11,7 +11,7 @@ class Server {
 
         this.paths = {
             client:'/api/v1/client',
-            
+            regla:'/api/v1/regla',
         }
 
 
@@ -48,6 +48,7 @@ class Server {
         
         
         this.app.use( this.paths.client, require('../routes/clients'));
+        this.app.use( this.paths.regla, require('../routes/reglas'));
         
     }
 
