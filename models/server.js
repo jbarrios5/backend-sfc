@@ -13,7 +13,8 @@ class Server {
             client:'/api/v1/client',
             punto:'/api/v1/punto',
             regla:'/api/v1/regla',
-            bolsaPunto:'/api/v1/bolsa'
+            bolsaPunto:'/api/v1/bolsa',
+            parametroPunto:'/api/v1/parametro'
         }
 
 
@@ -52,6 +53,8 @@ class Server {
         this.app.use( this.paths.client, require('../routes/clients'));
         this.app.use( this.paths.regla, require('../routes/reglas'));
         this.app.use( this.paths.bolsaPunto, require('../routes/bolsaPuntos'));
+        this.app.use( this.paths.punto, require('../routes/puntos'));
+        this.app.use( this.paths.parametroPunto, require('../routes/parametros'));
 
     }
 
