@@ -14,7 +14,9 @@ class Server {
             punto:'/api/v1/punto',
             regla:'/api/v1/regla',
             bolsaPunto:'/api/v1/bolsa',
-            parametroPunto:'/api/v1/parametro'
+            parametroPunto:'/api/v1/parametro',
+            compra:'/api/v1/compra',
+            canje:'/api/v1/canje'
         }
 
 
@@ -55,6 +57,8 @@ class Server {
         this.app.use( this.paths.bolsaPunto, require('../routes/bolsaPuntos'));
         this.app.use( this.paths.punto, require('../routes/puntos'));
         this.app.use( this.paths.parametroPunto, require('../routes/parametros'));
+        this.app.use( this.paths.compra, require('../routes/compras'));
+        this.app.use( this.paths.canje, require('../routes/canjes'));
 
     }
 
