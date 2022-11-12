@@ -6,7 +6,7 @@ const router = Router();
 //get all rules from db
 router.get('/', getAllCanje)
 //add new punto
-router.post('/', addCanje)
+router.post('/:id', addCanje)
 //update punto
 router.put('/:uid', updateCanje)
 //to delete punto

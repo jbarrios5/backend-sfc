@@ -1,4 +1,6 @@
+const bolsaPunto = require("../models/bolsaPunto");
 const Canje = require("../models/canje");
+const premio = require("../models/premio");
 
 
 const getAllCanje = async (req, res) => {
@@ -16,15 +18,31 @@ const getAllCanje = async (req, res) => {
 
 const addCanje = async (req, res = response) => {
     try {
-        //se agrega todo lo que viene del frontend
-        //asumimos que los datos seran validados antes de enviar
-        const canje = new Canje(req.body)
+        const {id} = req.params
+        const premioEncontrado = await premio.findById(id)
+
+        const documentoCliente = req.body.documentoCliente
+        const equivalencia = premioEncontrado.equivalencia
+        const premioCanjeado = premioEncontrado.descripcion 
+        const canje = new Canje({documentoCliente,
+                                equivalencia,
+                                premioCanjeado})
 
         //guardamos en la db para posteriormente retornar
         canje.save()
+
+        //actualizamos la bolsa
+        const bolsaEncontrada = await bolsaPunto.findOne({documentoCliente,status:true})    
+        bolsaEncontrada.saldoPuntos = bolsaEncontrada.saldoPuntos   - equivalencia  
+        bolsaEncontrada.ultimoPuntajeUtilizado = equivalencia 
+
+        if( bolsaEncontrada.saldoPuntos === 0 )bolsaEncontrada.status = false
+        bolsaEncontrada.save()
+
+
         //se debe debitos el monto de el registro de bolsa de puntos, puede ser por un trigger
         res.status(200).json({
-            punto,
+            canje,
             msg: 'Canje agregada exitosamente'
         });
     } catch (error) {

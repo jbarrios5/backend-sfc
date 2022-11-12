@@ -17,20 +17,21 @@ const BolsaPuntoSchema = Schema({
 
     },
     puntajeAsignado: {
-        type: String,
+        type: Number,
         required: [true, 'El puntaje es obligatorio'],
 
     },
-    puntajeUtilizado: {
-        type: String,
+    ultimoPuntajeUtilizado: {
+        type: Number,
+        default:0
 
     },
     saldoPuntos: {
-        type: String,
+        type: Number,
 
     },
     montoOperacion: {
-        type: String,
+        type: Number,
 
     },
 

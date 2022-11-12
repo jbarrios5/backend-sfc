@@ -1,3 +1,6 @@
+const { generarPunto, obtenerSaldoCliente } = require("../helpers/obtenerPuntoCompra");
+const bolsaPunto = require("../models/bolsaPunto");
+const client = require("../models/client");
 const Compra = require("../models/compra");
 
 
@@ -16,15 +19,53 @@ const getAllCompra = async (req, res) => {
 
 const addCompra = async (req, res = response) => {
     try {
+        const {monto} = req.body
         //se agrega todo lo que viene del frontend
         //asumimos que los datos seran validados antes de enviar
-        const compra = new Compra(req.body)
+        /*let saldoCliente = Number(await obtenerSaldoCliente(req.body.documentoCliente))
+        console.log(`Obtuvimos el saldo del cliente con valor ${saldoCliente}`);*/
 
+        
+
+        /*Todo asinga el putno y guardad en bolsa */
+        const puntajeAsignado = Number(await generarPunto(monto))
+        console.log(`Obtuvimos el punto con valor ${puntajeAsignado}`);
+
+        //saldoCliente = saldoCliente + puntajeAsignado;
+        //console.log("Actualizaremos en clientes el campo saldo con valor: "+saldoCliente);
+        //const document = req.body.documentoCliente;
+        //const updateSaldoCliente = await client.findOneAndUpdate(document,{saldo:Number(saldoCliente)})
+        //console.log("Despues de actualizar cliente");
+        //console.log(updateSaldoCliente);
+        const documentoCliente = req.body.documentoCliente;
+        const now = new Date();
+        const fechaAsignacionPuntaje = String(now)
+        console.log(fechaAsignacionPuntaje);
+        const numWeeks = 2;
+        now.setDate(now.getDate() + numWeeks * 7);
+        const fechaCaducidadPuntaje = String(now)
+        console.log(fechaCaducidadPuntaje);
+        const montoOperacion = Number(req.body.monto)
+        const saldoPuntos = puntajeAsignado    
+        const bolsa = new bolsaPunto({
+            documentoCliente,
+            fechaAsignacionPuntaje,
+            fechaCaducidadPuntaje,
+            puntajeAsignado,
+            montoOperacion,
+            saldoPuntos})
+
+        console.log("Tenemos la bolsa vamos a crear");
+        console.log(bolsa);
+        bolsa.save()//crea la bolsa
+
+        const compra = new Compra(req.body)
+        
         //guardamos en la db para posteriormente retornar
         compra.save()
         //se debe agregar el registro de bolsa de puntos, puede ser por un trigger
         res.status(200).json({
-            punto,
+            compra,
             msg: 'Compra agregada exitosamente'
         });
     } catch (error) {

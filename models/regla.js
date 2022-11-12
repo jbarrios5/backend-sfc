@@ -6,13 +6,13 @@ const ReglaSchema = Schema({
         type: String,
         required: [true, 'La descripción es obligatoria']
     },
-    limit_inferior: {
-        type: String,
+    limitInferior: {
+        type: Number,
         required: [true, 'El limite inferior es obligatorio'],
 
     },
-    limit_superior: {
-        type: String,
+    limitSuperior: {
+        type: Number,
         required: [true, 'El limite superior es obligatorio'],
 
     },

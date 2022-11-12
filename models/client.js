@@ -33,6 +33,10 @@ const ClientSchema = Schema({
         type: String,
 
     },
+    saldo:{
+        type:Number,
+        default:0
+    },
     status:{
         type:Boolean,
         default:true

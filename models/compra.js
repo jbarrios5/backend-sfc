@@ -7,7 +7,7 @@ const CompraSchema = Schema({
         required: [true, 'El id de cliente  es obligatorio']
     },
     monto: {
-        type: String,
+        type: Number,
         required: [true, 'El monto a asignar es obligatorio']
     },
     fecha: {
