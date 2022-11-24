@@ -3,7 +3,7 @@ const Client = require("../models/client");
 
 const getAllClient = async(req,res)=>{
     try {
-        const clients = await Client.find({})
+        const clients = await Client.find({status:true})
         res.status(200).json({
             clients
         })
@@ -42,9 +42,9 @@ const addClient = async(req, res = response) => {
 //no se borra de la DB para no tener problemas de integridad referencial
 const deleteClient = async(req, res = response) => {
     try {
-        const { documento } = req.params;
-        const clientRemove = await Client.findOneAndUpdate({documento:documento},{status:false})
-        //const client = await Client.findByIdAndUpdate( id, { estado: false } );    
+        const { id } = req.params;
+        //const clientRemove = await Client.findOneAndUpdate({documento:documento},{status:false})
+        const client = await Client.findByIdAndUpdate( id, { estado: false } );    
         res.status(200).json({msg:'Cliente eliminado correctamente'});
     } catch (error) {
         console.log(error);
