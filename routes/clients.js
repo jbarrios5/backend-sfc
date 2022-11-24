@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { addClient, deleteClient, updateClient, getAllClient } = require('../controllers/client');
+const { addClient, deleteClient, updateClient, getAllClient, getClientByDocumento } = require('../controllers/client');
 
 
 
@@ -17,6 +17,8 @@ router.delete('/:documento',deleteClient)
 
 //update a client by document 
 router.put('/:documento',updateClient)
+
+router.get('/:documento',getClientByDocumento)
 
 
  
