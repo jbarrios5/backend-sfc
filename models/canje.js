@@ -9,15 +9,12 @@ const CanjeSchema = Schema({
     fecha: {
         type: String,
         default:String(new Date())
-
     },
     premioCanjeado:{
         type:String
     },
     equivalencia: {
         type: Number,
-        
-
     },
     status: {
         type: Boolean,

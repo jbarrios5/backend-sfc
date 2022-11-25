@@ -4,7 +4,6 @@ const { Schema, model } = require('mongoose');
 const PremioSchema = Schema({
     descripcion: {
         type: String,
-        
     },
     equivalencia:{
         type:Number

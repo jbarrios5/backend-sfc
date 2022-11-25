@@ -12,8 +12,7 @@ const CompraSchema = Schema({
     },
     fecha: {
         type: String,
-        required: [true, 'La fecha a asignar es obligatoria'],
-
+        default: new Date()
     },
     status: {
         type: Boolean,

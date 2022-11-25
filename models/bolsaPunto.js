@@ -34,7 +34,6 @@ const BolsaPuntoSchema = Schema({
         type: Number,
 
     },
-
     status: {
         type: Boolean,
         default: true
