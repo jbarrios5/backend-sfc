@@ -13,7 +13,7 @@ router.get('/',getAllClient)
 router.post('/',addClient)
 
 //delete a client
-router.delete('/:documento',deleteClient)
+router.delete('/:id',deleteClient)
 
 //update a client by document 
 router.put('/:documento',updateClient)
