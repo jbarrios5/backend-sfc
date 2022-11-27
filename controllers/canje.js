@@ -1,6 +1,7 @@
 const bolsaPunto = require("../models/bolsaPunto");
 const Canje = require("../models/canje");
 const premio = require("../models/premio");
+const { notificationCanje } = require("./sendNotification");
 
 
 const getAllCanje = async (req, res) => {
@@ -24,7 +25,6 @@ const addCanje = async (req, res = response) => {
         const documentoCliente = req.body.documentoCliente
         const equivalencia = premioEncontrado.equivalencia
         const premioCanjeado = premioEncontrado.descripcion
-
 
         const canje = new Canje({
             documentoCliente,
@@ -74,6 +74,8 @@ const addCanje = async (req, res = response) => {
                 bolsaEncontrada.ultimoPuntajeUtilizado = equivalencia
                 if (bolsaEncontrada.saldoPuntos === 0) bolsaEncontrada.status = false
                 bolsaEncontrada.save()
+                notificationCanje(bolsaEncontrada.documentoCliente , canje)
+
             }
             console.log('finaliza en usar los puntos');
 

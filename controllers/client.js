@@ -1,4 +1,5 @@
 const Client = require("../models/client");
+const { sendNotificationClientRegister } = require("./sendNotification");
 
 
 const getAllClient = async (req, res) => {
@@ -24,6 +25,10 @@ const addClient = async (req, res = response) => {
 
         //guardamos en la db para posteriormente retornar
         client.save()
+
+        const clientMail = req.body.correo;
+
+        sendNotificationClientRegister(clientMail)
 
         res.status(200).json({
             client,

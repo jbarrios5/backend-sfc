@@ -9,6 +9,7 @@ const generarPunto = async (monto) => {
     let puntoEncontrado = ""
 
     reglas.forEach((regla, index) => {
+
         if (montoOperacion > regla.limitInferior && montoOperacion <= regla.limitSuperior) {
             puntoEncontrado = regla.equivalencia;
         }
@@ -24,7 +25,31 @@ const obtenerSaldoCliente = async (documentoCliente) => {
 
 }
 
+const obtenerEmailCliente = async (documentoCliente) => {
+    const cliente = await client.findOne({ documento: documentoCliente })
+    return cliente.correo;
+}
+
+const formatoDate = (fecha) => {
+
+    if (fecha != null) {
+        const date = new Date(fecha)
+        const dateFormat = date.getDate().toString().padStart(2, '0') + '/' +
+            (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+            date.getFullYear()
+
+        return dateFormat.toString()
+
+    }
+    return null
+
+
+}
+
+
 module.exports = {
     generarPunto,
-    obtenerSaldoCliente
+    obtenerSaldoCliente,
+    formatoDate,
+    obtenerEmailCliente
 }

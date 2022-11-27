@@ -37,6 +37,10 @@ const BolsaPuntoSchema = Schema({
     status: {
         type: Boolean,
         default: true
+    },
+    notificationDate:{
+        type: Date,
+        default:String(new Date())
     }
 });
 
