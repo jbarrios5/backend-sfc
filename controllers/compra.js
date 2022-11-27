@@ -19,13 +19,13 @@ const getAllCompra = async (req, res) => {
 
 const addCompra = async (req, res = response) => {
     try {
-        const {monto} = req.body
+        const { monto } = req.body
         //se agrega todo lo que viene del frontend
         //asumimos que los datos seran validados antes de enviar
         /*let saldoCliente = Number(await obtenerSaldoCliente(req.body.documentoCliente))
         console.log(`Obtuvimos el saldo del cliente con valor ${saldoCliente}`);*/
 
-        
+
 
         /*Todo asinga el putno y guardad en bolsa */
         const puntajeAsignado = Number(await generarPunto(monto))
@@ -37,37 +37,47 @@ const addCompra = async (req, res = response) => {
         //const updateSaldoCliente = await client.findOneAndUpdate(document,{saldo:Number(saldoCliente)})
         //console.log("Despues de actualizar cliente");
         //console.log(updateSaldoCliente);
-        const documentoCliente = req.body.documentoCliente;
-        const now = new Date();
-        const fechaAsignacionPuntaje = String(now)
-        console.log(fechaAsignacionPuntaje);
-        const numWeeks = 2;
-        now.setDate(now.getDate() + numWeeks * 7);
-        const fechaCaducidadPuntaje = String(now)
-        console.log(fechaCaducidadPuntaje);
-        const montoOperacion = Number(req.body.monto)
-        const saldoPuntos = puntajeAsignado    
-        const bolsa = new bolsaPunto({
-            documentoCliente,
-            fechaAsignacionPuntaje,
-            fechaCaducidadPuntaje,
-            puntajeAsignado,
-            montoOperacion,
-            saldoPuntos})
 
-        console.log("Tenemos la bolsa vamos a crear");
-        console.log(bolsa);
-        bolsa.save()//crea la bolsa
+        if (puntajeAsignado > 0) {
+            const documentoCliente = req.body.documentoCliente;
+            const now = new Date();
+            const fechaAsignacionPuntaje = String(now)
+            console.log(fechaAsignacionPuntaje);
+            const numWeeks = 2;
+            now.setDate(now.getDate() + numWeeks * 7);
+            const fechaCaducidadPuntaje = String(now)
+            console.log(fechaCaducidadPuntaje);
+            const montoOperacion = Number(req.body.monto)
+            const saldoPuntos = puntajeAsignado
+            const bolsa = new bolsaPunto({
+                documentoCliente,
+                fechaAsignacionPuntaje,
+                fechaCaducidadPuntaje,
+                puntajeAsignado,
+                montoOperacion,
+                saldoPuntos
+            })
 
-        const compra = new Compra(req.body)
-        
-        //guardamos en la db para posteriormente retornar
-        compra.save()
-        //se debe agregar el registro de bolsa de puntos, puede ser por un trigger
-        res.status(200).json({
-            compra,
-            msg: 'Compra agregada exitosamente'
-        });
+            console.log("Tenemos la bolsa vamos a crear");
+            console.log(bolsa);
+            bolsa.save()//crea la bolsa
+
+            const compra = new Compra(req.body)
+
+            //guardamos en la db para posteriormente retornar
+            compra.save()
+            //se debe agregar el registro de bolsa de puntos, puede ser por un trigger
+            res.status(200).json({
+                compra,
+                msg: 'Compra agregada exitosamente'
+            });
+        } else {
+            console.log("Error al asignar puntos, no existe regla para el monto ingresado");
+            return res.status(400).json({
+                msg: 'Error al asignar puntos, no existe regla para el monto ingresado'
+            })
+        }
+
     } catch (error) {
         console.log(error);
         res.status(500).json({

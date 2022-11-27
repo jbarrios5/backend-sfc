@@ -3,7 +3,7 @@ const Regla = require("../models/regla");
 
 const getAllReglas = async (req, res) => {
     try {
-        const reglas = await Regla.find();
+        const reglas = await Regla.find({ status: true })
         res.status(200).json({ reglas })
     } catch (error) {
         console.log(error);

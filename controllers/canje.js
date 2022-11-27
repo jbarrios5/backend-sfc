@@ -24,6 +24,8 @@ const addCanje = async (req, res = response) => {
         const documentoCliente = req.body.documentoCliente
         const equivalencia = premioEncontrado.equivalencia
         const premioCanjeado = premioEncontrado.descripcion
+
+
         const canje = new Canje({
             documentoCliente,
             equivalencia,
@@ -41,13 +43,40 @@ const addCanje = async (req, res = response) => {
         const dateToCompare = new Date(dateVerification)
 
         if (vencimineto >= dateToCompare) {
-            console.log("Puntos aun no estan caducados");
+
             console.log('Utilizando los puntos');
-            bolsaEncontrada.saldoPuntos = bolsaEncontrada.saldoPuntos - equivalencia
-            bolsaEncontrada.ultimoPuntajeUtilizado = equivalencia
-            if (bolsaEncontrada.saldoPuntos === 0) bolsaEncontrada.status = false
-            bolsaEncontrada.save()
+            const restaDePuntos = bolsaEncontrada.saldoPuntos - equivalencia
+
+            if (restaDePuntos < 0) {
+
+                const updateUltimo = equivalencia - (restaDePuntos * -1)
+                bolsaEncontrada.saldoPuntos = 0
+                bolsaEncontrada.status = false
+                bolsaEncontrada.ultimoPuntajeUtilizado = updateUltimo
+                await bolsaEncontrada.save()
+
+                console.log('Utilizando los puntos de la siguiente bolsa');
+                const nextBolsa = await bolsaPunto.findOne({ documentoCliente, status: true })
+                const nextvencimineto = new Date(bolsaEncontrada.fechaCaducidadPuntaje)
+                const nextdateToCompare = new Date(dateVerification)
+                const toPositive = restaDePuntos * (-1)
+
+                if (nextvencimineto >= nextdateToCompare) {
+                    const nextResta = (nextBolsa.saldoPuntos - toPositive)
+                    nextBolsa.ultimoPuntajeUtilizado = toPositive
+                    nextBolsa.saldoPuntos = nextResta
+                    if (nextBolsa.puntos === 0) nextBolsa.status = false
+                    await nextBolsa.save()
+                }
+
+            } else {
+                bolsaEncontrada.saldoPuntos = bolsaEncontrada.saldoPuntos - equivalencia
+                bolsaEncontrada.ultimoPuntajeUtilizado = equivalencia
+                if (bolsaEncontrada.saldoPuntos === 0) bolsaEncontrada.status = false
+                bolsaEncontrada.save()
+            }
             console.log('finaliza en usar los puntos');
+
         } else if (vencimineto < dateToCompare) {
 
             console.log("Puntos estan caducados");
