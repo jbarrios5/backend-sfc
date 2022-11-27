@@ -54,6 +54,7 @@ const addCanje = async (req, res = response) => {
                 bolsaEncontrada.status = false
                 bolsaEncontrada.ultimoPuntajeUtilizado = updateUltimo
                 await bolsaEncontrada.save()
+                notificationCanje(bolsaEncontrada.documentoCliente , canje)
 
                 console.log('Utilizando los puntos de la siguiente bolsa');
                 const nextBolsa = await bolsaPunto.findOne({ documentoCliente, status: true })
@@ -67,6 +68,7 @@ const addCanje = async (req, res = response) => {
                     nextBolsa.saldoPuntos = nextResta
                     if (nextBolsa.puntos === 0) nextBolsa.status = false
                     await nextBolsa.save()
+                    notificationCanje(nextBolsa.documentoCliente , canje)
                 }
 
             } else {
