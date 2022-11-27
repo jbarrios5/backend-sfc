@@ -20,23 +20,10 @@ const getAllCompra = async (req, res) => {
 const addCompra = async (req, res = response) => {
     try {
         const { monto } = req.body
-        //se agrega todo lo que viene del frontend
-        //asumimos que los datos seran validados antes de enviar
-        /*let saldoCliente = Number(await obtenerSaldoCliente(req.body.documentoCliente))
-        console.log(`Obtuvimos el saldo del cliente con valor ${saldoCliente}`);*/
-
-
 
         /*Todo asinga el putno y guardad en bolsa */
         const puntajeAsignado = Number(await generarPunto(monto))
         console.log(`Obtuvimos el punto con valor ${puntajeAsignado}`);
-
-        //saldoCliente = saldoCliente + puntajeAsignado;
-        //console.log("Actualizaremos en clientes el campo saldo con valor: "+saldoCliente);
-        //const document = req.body.documentoCliente;
-        //const updateSaldoCliente = await client.findOneAndUpdate(document,{saldo:Number(saldoCliente)})
-        //console.log("Despues de actualizar cliente");
-        //console.log(updateSaldoCliente);
 
         if (puntajeAsignado > 0) {
             const documentoCliente = req.body.documentoCliente;
