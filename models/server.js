@@ -17,7 +17,9 @@ class Server {
             parametroPunto:'/api/v1/parametro',
             compra:'/api/v1/compra',
             canje:'/api/v1/canje',
-            premio:'/api/v1/premio'
+            premio:'/api/v1/premio',
+            user: '/api/v1/user',
+            login: '/api/v1/login'
         }
 
 
@@ -61,7 +63,8 @@ class Server {
         this.app.use( this.paths.compra, require('../routes/compras'));
         this.app.use( this.paths.canje, require('../routes/canjes'));
         this.app.use( this.paths.premio, require('../routes/premios'));
-
+        this.app.use( this.paths.user, require('../routes/user'));
+        this.app.use( this.paths.login, require('../routes/auth'));
     }
 
     listen() {
