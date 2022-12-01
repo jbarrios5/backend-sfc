@@ -146,8 +146,55 @@ const notificationCanje = async (documento, canje) => {
 
 }
 
+const sendCode = async (email, code) => {
+
+    const formCanje =
+        `
+        <div class=""
+            style="justify-content: center; text-align:center; width: 550px; text-align: center; border-radius: 8px;">
+            <div class="texthead">
+                <h1>NUEVO ACCESO DETECTADO</h1>
+            </div>
+            <div class="cont" style=" border-radius: 8px; padding-bottom: 20px;">
+                <div class="msg" style="border: 1px solid #008F8F;; border-radius: 8px; text-align: initial;
+                padding-left: 20px;">
+                    <h4>Se detecto nuevo acceso</h4>
+                    <div class="msg" style="border: 1px solid #008F8F;; border-radius: 8px; text-align: initial;
+                padding-left: 20px; padding-bottom: 20px;">
+                    <p>CLAVE: ${code} </p>
+                    <p>fecha: ${new Date()} </p>
+                </div>
+                </div>
+            </div>
+        </div>
+    `
+
+    console.log("Se hace envio de correo notificaión de canjeo de envio de codigo");
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: "mail.brxsgo.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: 'notificaciones@brxsgo.com', // your cPanel email address
+            pass: 'Kj9JWqn}2(-x', // your cPanel email password
+        },
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+        from: '"NUEVO ACCESO DETECTADO" <notificaciones@brxsgo.com>', // sender address
+        to: email, // list of receivers
+        subject: "Nuevo acceso detectado", // Subject line
+        text: "Codigo para iniciar sesion", // plain text body
+        html: formCanje, // html body
+    });
+    console.log("Notificación exitosa de envio de codigo")
+}
+
 module.exports = {
     NotificationExpirePuntos,
     notificationCanje,
-    sendNotificationClientRegister
+    sendNotificationClientRegister,
+    sendCode
 }

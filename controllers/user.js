@@ -31,7 +31,25 @@ const createUser = async (req, res) => {
     }
 }
 
+const getUser = async (req, res) => {
+
+
+
+    try {
+        const { uid } = req.params;
+        const user = await User.findOne
+            ({ _id: uid });
+        res.status(200).json({ user });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: "Ocurrio un error inesperado al obtener un usuario"
+        });
+    }
+}
+
 
 module.exports = {
-    createUser
+    createUser,
+    getUser
 };
